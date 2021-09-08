@@ -5,17 +5,24 @@ package application
 
 import (
 	"context"
-	"fmt"
 
-	application "github.com/Senney/todo-app/application/models"
-	application1 "github.com/Senney/todo-app/application/schema"
+	model "github.com/Senney/todo-app/application/models"
+	schema "github.com/Senney/todo-app/application/schema"
 )
 
-func (r *queryResolver) Todos(ctx context.Context) ([]*application.Todo, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
+	var todos []*model.Todo
+	dummyTodo := model.Todo{
+		ID: "abc123",
+		Content: "This is my todo!",
+		Status: model.TodoStatusIncomplete,
+	}
+
+	todos = append(todos, &dummyTodo)
+	return todos, nil
 }
 
-// Query returns application1.QueryResolver implementation.
-func (r *Resolver) Query() application1.QueryResolver { return &queryResolver{r} }
+// Query returns schema.QueryResolver implementation.
+func (r *Resolver) Query() schema.QueryResolver { return &queryResolver{r} }
 
 type queryResolver struct{ *Resolver }

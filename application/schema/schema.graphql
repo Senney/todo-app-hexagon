@@ -1,0 +1,14 @@
+type Query {
+  todos: [Todo!]!
+}
+
+type Todo {
+  id: String!
+  content: String!
+  status: TodoStatus!
+}
+
+enum TodoStatus {
+  COMPLETE
+  INCOMPLETE
+}

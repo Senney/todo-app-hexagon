@@ -10,7 +10,7 @@ exec:
 # Where should any generated models go?
 model:
   filename: application/models/models.generated.go
-  package: 
+  package: model
 
 # Where should the resolver implementations go?
 resolver:

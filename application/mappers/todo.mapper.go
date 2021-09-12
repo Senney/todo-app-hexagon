@@ -1,6 +1,8 @@
 package mappers
 
 import (
+	"errors"
+
 	model "github.com/Senney/todo-app/application/models"
 	"github.com/Senney/todo-app/domain/entities"
 )
@@ -24,5 +26,5 @@ func MapTodoStatusToTodoStatusModel(todoStatus entities.TodoStatus) (model.TodoS
 		return model.TodoStatusIncomplete, nil
 	}
 
-	return "Invalid todo status", nil
+	return "", errors.New("Invalid todo status")
 }

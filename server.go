@@ -9,6 +9,8 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	application "github.com/Senney/todo-app/application/resolvers"
 	"github.com/Senney/todo-app/application/schema"
+	"github.com/Senney/todo-app/domain/entities"
+	"github.com/Senney/todo-app/domain/todo"
 )
 
 const defaultPort = "8080"
@@ -19,7 +21,20 @@ func main() {
 		port = defaultPort
 	}
 
-	srv := handler.NewDefaultServer(schema.NewExecutableSchema(schema.Config{Resolvers: &application.Resolver{}}))
+	todos := [...]entities.Todo{
+		{ID: "abc", Content: "Todo #1!", Status: entities.TodoStatusCompleted},
+		{ID: "def", Content: "Todo #2!", Status: entities.TodoStatusIncomplete},
+	}
+
+	todoProvider := todo.TodoProviderAdapter{
+		Todos: todos[:],
+	}
+
+	resolver := application.Resolver{
+		TodoProvider: &todoProvider,
+	}
+
+	srv := handler.NewDefaultServer(schema.NewExecutableSchema(schema.Config{Resolvers: &resolver}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)

@@ -6,19 +6,21 @@ package application
 import (
 	"context"
 
+	"github.com/Senney/todo-app/application/mappers"
 	model "github.com/Senney/todo-app/application/models"
 	schema "github.com/Senney/todo-app/application/schema"
 )
 
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 	var todos []*model.Todo
-	dummyTodo := model.Todo{
-		ID: "abc123",
-		Content: "This is my todo!",
-		Status: model.TodoStatusIncomplete,
+
+	domainTodos := r.TodoProvider.GetTodos()
+
+	for _, domainTodo := range domainTodos {
+		todo, _ := mappers.MapTodoToTodoModel(domainTodo)
+		todos = append(todos, &todo)
 	}
 
-	todos = append(todos, &dummyTodo)
 	return todos, nil
 }
 
